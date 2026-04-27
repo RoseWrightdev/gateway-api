@@ -5,13 +5,14 @@ A suite of tools designed to make the Gateway API documentation resilient to ref
 1.  mkdocs_utils.py: The core engine. Contains all logic for ID generation, frontmatter parsing, link conversion, and YAML updates.
 2.  mkdocs_linking.py: A CLI wrapper for manual maintenance tasks (preparing docs and converting links).
 3.  mkdocs_main.py: The MkDocs macros plugin that provides the `internal_link` macro.
+4.  mkdocs_hooks.py: Lifecycle hooks for automatic redirect generation.
 
 ---
 
 ## Core Features
 
 ### 1. Stable Identification (ID Injection)
-The system ensures every Markdown file has a unique, permanent ID in its frontmatter. If a file is missing an ID, the logic in `mkdocs_utils.py` can generate one based on its path and inject it into the frontmatter. The IDs allow the system to track a file even if its filename or directory changes.
+The system ensures every Markdown file has a unique, permanent ID in its frontmatter. If a file is missing an ID, the `prepare` script generates one based on its path and injects it into the frontmatter. The IDs allow the system to track a file even if its filename or directory changes.
 
 ### 2. Resilient Linking (`internal_link` macro)
 Instead of hardcoding relative paths like `[text](../guides/api.md)`, the system allows using stable IDs:
@@ -19,6 +20,9 @@ Instead of hardcoding relative paths like `[text](../guides/api.md)`, the system
 
 ### 3. Automated Link Conversion
 The toolkit includes a script to bulk-convert existing standard Markdown links into the resilient macro format with a masking strategy to ensure links inside code blocks or backticks are never touched.
+
+### 4. Automatic Redirect Management
+When files move, the system detects the change via the stable IDs and updates the `redirects` plugin in `mkdocs.yml`.
 
 ---
 
@@ -86,7 +90,7 @@ When re-enabling, you should also re-add the warning comment above the `redirect
 
 ## How to Use Manually
 
-The `hack/mkdocs_linking.py` script is your primary interface for maintenance.
+The `hack/mkdocs_linking.py` script is your primary interface for maintenance. It is the recommended way to test changes before enabling the hook.
 
 ### 1. Safety First: Dry Run
 To see what the script would do without actually modifying any files, use the `--dry-run` flag:
