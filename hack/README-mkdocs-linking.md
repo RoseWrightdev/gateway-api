@@ -56,9 +56,7 @@ Once rules are generated, the script uses a YAML-aware parser to locate the redi
 
 ## Current Status
 
-Note: The hook is currently disabled in the root mkdocs.yml.
-
-It was disabled to prevent destructive mutations to mkdocs.yml during active development and CI runs where side effects are undesirable.
+The automatic lifecycle hook (`mkdocs_hooks.py`) is enabled in the root `mkdocs.yml`.
 
 ## How to Enable
 
