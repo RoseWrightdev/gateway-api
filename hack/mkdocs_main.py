@@ -20,6 +20,9 @@ This provides the internal_link macro for resilient documentation linking.
 
 import os
 import sys
+import logging
+from pathlib import Path
+from typing import Dict, Optional
 
 # Ensure the directory containing this script is in the Python path
 # so that internal imports like 'mkdocs_utils' work correctly.
